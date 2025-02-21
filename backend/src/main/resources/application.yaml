@@ -5,5 +5,11 @@ spring:
       password: root
       host: localhost
       port: 27017
-      database: notes-app
+      database: notes_app
       authentication-database: admin
+      auto-index-creation: true
+security:
+  jwt:
+    secret: asdfsdaskdfaskfkasldfkasdl;kfa;skldfklasdfklasdkfasdfasdfasfasdfasdfasd
+    access: 15
+    refresh: 43200

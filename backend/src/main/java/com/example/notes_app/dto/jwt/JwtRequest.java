@@ -1,5 +1,8 @@
 package com.example.notes_app.dto.jwt;
 
-public class JwtRequest {
+import lombok.Getter;
 
+@Getter
+public class JwtRequest {
+    private String token;
 }

@@ -10,7 +10,6 @@ import com.example.notes_app.dto.jwt.JwtResponse;
 import com.example.notes_app.mapper.ApplicationUserMapper;
 import com.example.notes_app.service.AuthenticationService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,10 +41,8 @@ public class AuthenticationRestController {
      *         or a 400 Bad Request if registration fails.
      */
     @PostMapping(path = "/signup")
-    public ResponseEntity<Void> signup(
-            @Valid @RequestBody ApplicationUserDto registrationDto,
+    public ResponseEntity<Void> signup(@Valid @RequestBody ApplicationUserDto registrationDto,
             UriComponentsBuilder uriBuilder) {
-
         try {
             var userId = authService.registerApplicationUser(userMapper.toEntity(registrationDto));
             log.info("User registered successfully with ID: {}", userId);
@@ -71,21 +68,14 @@ public class AuthenticationRestController {
      *         if login fails.
      */
     @PostMapping(path = "/login")
-    public ResponseEntity<JwtResponse> login(@Valid @RequestBody ApplicationUserDto credentialsDto) {
-        try {
-            JwtResponse jwtResponse = authService.loginApplicationUser(userMapper.toEntity(credentialsDto));
-            log.info("User logged in successfully: {}", credentialsDto.getUsername());
-            return ResponseEntity.ok(jwtResponse);
-
-        } catch (Exception e) {
-            log.warn("Login failed for user: {}", credentialsDto.getUsername(), e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<JwtResponse> login(@RequestBody ApplicationUserDto credentialsDto) {
+        JwtResponse jwtResponse = authService.loginApplicationUser(userMapper.toEntity(credentialsDto));
+        log.info("User logged in successfully: {}", credentialsDto.getUsername());
+        System.out.println(jwtResponse);
+        return ResponseEntity.ok(jwtResponse);
     }
 
     /**
-     * Refreshes the JWT token. (INCOMPLETE IMPLEMENTATION)
-     *
      * @param {@link JwtRequest} refreshRequest Request containing the refresh
      *               token.
      * @return {@link ResponseEntity} ResponseEntity containing the new
@@ -96,8 +86,6 @@ public class AuthenticationRestController {
      */
     @PostMapping(path = "/refresh")
     public ResponseEntity<JwtResponse> refresh(@Valid @RequestBody JwtRequest refreshRequest) {
-
-        log.warn("JWT refresh endpoint not fully implemented!");
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Or a more appropriate response
+        return ResponseEntity.ok(authService.refresh(refreshRequest));
     }
 }
