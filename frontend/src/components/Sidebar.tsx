@@ -10,7 +10,7 @@ import TitleButton from "./buttons/TitleButton";
 type FolderSidebarProps = {
   workspaces: Workspace[];
   handleClick: (name: string) => void;
-  handleUpdate: (workspaces: Workspace[]) => void;
+  handleUpdateWorkspaces: (worksapace: Workspace) => void;
 };
 
 export type Workspace = {
@@ -21,10 +21,10 @@ export type Workspace = {
 const FolderSidebar: React.FC<FolderSidebarProps> = ({
   workspaces,
   handleClick,
-  handleUpdate,
+  handleUpdateWorkspaces,
 }) => {
   return (
-    <aside className={`fixed h-[90%] w-64 overflow-y-auto pl-4`}>
+    <aside className={`fixed h-[90%] w-72 overflow-y-auto pl-4`}>
       <div className="">
         <div className="mx-7">
           <TitleButton
@@ -44,13 +44,13 @@ const FolderSidebar: React.FC<FolderSidebarProps> = ({
           title="Workspace"
           leftIcon=<FaFolder className="text-white-light" />
           rightIcon=<GoPlus
-            className="text-white-light size-6"
+            className="text-white-light mr-4 size-7"
             onClick={() => {
               const newWorkspace: Workspace = {
                 id: Math.random().toString(),
                 name: "Unnamed",
               };
-              handleUpdate([...workspaces, newWorkspace]);
+              handleUpdateWorkspaces(newWorkspace);
             }}
           />
         />
